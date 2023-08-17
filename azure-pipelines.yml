@@ -1,0 +1,31 @@
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage:
+    jobs:
+    - job: frist job
+      steps:
+      - bash: echo build firstjob
+      - bash: echo $(pipeline level variable)
+      - bash: echo $(build.buildnumber)
+      - bash: echo $(build.buildid)
+      - bash: echo $(build.sourcebranchname)
+      - bash: echo $(build.sourceDirectory)
+      - bash: echo $(system.system.defaultworkingDirectory)
+      - bash: ls -r $(system.system.defaultworkingDirectory)
+      - bash: echo $(build.artifactstagingDirectory)
+      - bash: java --version
+      - bash: python --version 
+      - bash: ls -r $(build.artifactstagingDirectory) 
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(system.system.defaultworkingDirectory'
+          Contents: '**/*.yml'
+          TargetFolder: '$(build.artifactstagingDirectory)'
+      - bash: ls -r $(build.artifactstagingDirectory)
+  
